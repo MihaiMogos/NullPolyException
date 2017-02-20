@@ -22,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-elements/paper-elements.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -61,6 +62,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+    <iron-localstorage name="localstorage"
+        value="{{users}}"
+        on-iron-localstorage-load-empty="initializeUsersArray"
+        iron-localstorage-load="cleanUsersArray">
+    </iron-localstorage>
     <paper-toast id="toast" text="The app has now [[users.length]] users."></paper-toast>
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -118,14 +124,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         users: {
           type: Array,
-          notify: true,
-          value: []
+          notify: true
         }
       },
 
       observers: [
         '_routePageChanged(routeData.page)',
       ],
+
+      initializeUsersArray: function() {
+          this.users = [];
+      },
 
       _routePageChanged: function(page) {
         this.page = page || 'home';
@@ -154,6 +163,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             admin: e.detail[i].admin});
         }
 
+        Polymer.globalsManager.set('usersArray', this.users);
         // this.users.forEach(function(element){
         //   console.log(element);
         // });

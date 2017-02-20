@@ -21,15 +21,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <h1>Account view</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus at ducimus similique eveniet quibusdam sed earum, natus libero. Veniam, similique deserunt harum facere dicta officiis aliquam in culpa qui quis!
-      </p>
+      <div hidden$="{{!dataLoaded}}">Data loaded</div>
+      <div hidden$="{{dataLoaded}}">Data not loaded</div>
     </div>
   </template>
 
   <script>
     Polymer({
       is: 'account-view',
+      properties : {
+        dataLoaded: {
+          type: Boolean,
+          value: false,
+          notify:true
+        }
+      },
+
+      ready: function() {
+        var userData = Polymer.globalsManager.get('usersArray');
+
+        if (userData !== undefined && userData.length > 0) {
+            this.dataLoaded = true;
+        }
+        else {
+            this.dataLoaded = false;
+        }
+      }
     });
   </script>
 </dom-module>
