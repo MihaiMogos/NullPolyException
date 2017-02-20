@@ -20,6 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-elements/paper-elements.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -56,8 +58,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: black;
         font-weight: bold;
       }
+
     </style>
 
+    <paper-toast id="toast" text="The app has now [[users.length]] users."></paper-toast>
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -70,9 +74,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/view1">View One</a>
-          <a name="view2" href="/view2">View Two</a>
-          <a name="view3" href="/view3">View Three</a>
+          <a name="home"  href="/home">Home</a>
+          <a name="account" href="/account">Accounts</a>
+          <a name="card-information" href="/card-information">Cards details</a>
+          <a name="bank-information" href="/bank-information">Banks details</a>
         </iron-selector>
       </app-drawer>
 
@@ -89,12 +94,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-pages
             selected="[[page]]"
             attr-for-selected="name"
-            fallback-selection="view404"
+            fallback-selection="error404"
             role="main">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
-          <my-view404 name="view404"></my-view404>
+          <home-view name="home" on-loaded="_usersLoaded"></home-view>
+          <account-view name="account"></account-view>
+          <card-information-view name="card-information"></card-information-view>
+          <bank-information-view name="bank-information"></bank-information-view>
+          <error404-view name="error404"></error404-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -110,6 +116,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true,
           observer: '_pageChanged',
         },
+        users: {
+          type: Array,
+          notify: true,
+          value: []
+        }
       },
 
       observers: [
@@ -117,7 +128,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'home';
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -125,14 +136,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page) {
+        var resolvedPageUrl = this.resolveUrl(page + '-view.html');
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
       _showPage404: function() {
-        this.page = 'view404';
+        this.page = 'error404';
       },
+
+      _usersLoaded: function(e) {
+        for(var i=0; i < e.detail.length; i++)
+        {
+          this.push('users',{id: e.detail[i].id,
+                            name: e.detail[i].name,
+                            email: e.detail[i].email,
+                            admin: e.detail[i].admin});
+        }
+
+        // this.users.forEach(function(element){
+        //   console.log(element);
+        // });
+
+        console.log("no of users in main app view: " + e.detail.length);
+        this.$.toast.open();
+      }
     });
   </script>
 </dom-module>

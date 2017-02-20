@@ -2,13 +2,15 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/home-view.html",
+    "src/account-view.html",
+    "src/card-information-view.html",
+    "src/bank-information-view.html",
+    "src/error404-view.html"
   ],
   "sourceGlobs": [
     "src/**/*",
+    "fonts/**/*",
     "images/**/*",
     "bower.json"
   ],

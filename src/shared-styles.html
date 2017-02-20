@@ -14,6 +14,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shared-styles">
   <template>
     <style>
+        @font-face {
+            font-family: "INGMeRegular";
+            src: url("../fonts/Regular/INGMeWeb-Regular.eot?#iefix");
+            src: url("../fonts/Regular/INGMeWeb-Regular.eot?#iefix") format("eot"), url("../fonts/Regular/INGMeWeb-Regular.woff") format("woff"), url("../fonts/Regular/INGMeWeb-Regular.ttf") format("truetype"), url("../fonts/Regular/INGMeWeb-Regular.svg#INGMeWeb-Regular") format("svg");
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "INGMeBold";
+            src: url("../fonts/Bold/INGMeWeb-Bold.eot?#iefix");
+            src: url("../fonts/Bold/INGMeWeb-Bold.eot?#iefix") format("eot"), url("../fonts/Bold/INGMeWeb-Bold.woff") format("woff"), url("../fonts/Bold/INGMeWeb-Bold.ttf") format("truetype"), url("../fonts/Bold/INGMeWeb-Bold.svg#INGMeWeb-Bold") format("svg");
+            font-weight: bold;
+            font-style: normal;
+        }
+
       .card {
         margin: 24px;
         padding: 16px;
@@ -38,8 +53,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       h1 {
         margin: 16px 0;
         color: #212121;
+        font-family: INGMeRegular;
         font-size: 22px;
       }
+      
     </style>
   </template>
 </dom-module>
