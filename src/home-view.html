@@ -1,0 +1,68 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-data-table/default-styles.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="home-view">
+  <template is="dom-bind">
+    <style include="shared-styles" is="custom-style">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <iron-data-table id="grid" 
+                       selection-enabled 
+                       items="{{users}}"
+                       selected-item="{{selectedItem}}">
+        <data-table-column name="#" width="50px" flex="0">
+          <template>[[index]]</template>
+        </data-table-column>
+        <data-table-column name="Picture" width="50px" flex="0">
+          <template>
+            <img src="{{item.user.picture}}">
+          </template>
+        </data-table-column>
+        <data-table-column name="First Name">
+          <template>{{item.user.name.first}}</template>
+        </data-table-column>
+        <data-table-column name="Last Name">
+          <template>{{item.user.name.last}}</template>
+        </data-table-column>
+        <data-table-column name="Email">
+          <template>{{item.user.email}}</template>
+        </data-table-column>
+      </iron-data-table>
+  </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'home-view',
+      observers: [
+              '_selectedItemChanged(selectedItem)' ,
+      ],
+      _selectedItemChanged: function(ob) {
+              console.log('selectedItem', ob.user.id);
+              this.fire('iron-signal', {name: 'edituser', data: ob.user.id});
+      },
+      _computeSelectedStr: function(ob) {
+          return JSON.stringify(ob);
+      },
+      _deselecting: function(e) {
+          e.preventDefault();
+      }
+    });
+  </script>
+</dom-module>
