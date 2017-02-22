@@ -65,8 +65,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'new-user-view',
       addUser: function() {
-          var user = this.users[0];
+          //var user = this.users[0];
 
+          var user = {};
+          user.user = {};
+          user.user.name = {};
+          
           user.user.id = this.client_id;
           user.user.name.first = this.first_name;
           user.user.name.last = this.last_name;

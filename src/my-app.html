@@ -93,15 +93,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </iron-localstorage>
 
     <!--Modal for editing users-->
-    <paper-dialog id="dialog">
+    <paper-dialog id="dialog" alwaysOnTop>
       <h2><iron-image sizing="cover" id="profile-picture" src$="[[userEdit.user.picture]]"></iron-image> Client ID:  [[userEdit.user.id]]</h2>
       <form is="iron-form" id="basicform">
         <paper-input name="firstname" label="First Name" value="{{userEdit.user.name.first}}" required></paper-input>
         <paper-input name="lastname" label="Last Name" value="{{userEdit.user.name.last}}" required></paper-input>
         <paper-input name="email" label="Email" value="{{userEdit.user.email}}" required></paper-input>
         <br>
-        <paper-button raised on-tap="formSubmit">Submit</paper-button>
-        <paper-button raised on-tap="formReset">Reset</paper-button>
+        <paper-button raised on-tap="formSubmit">Save</paper-button>
+        <paper-button raised on-tap="formReset">Reset fields</paper-button>
+        <paper-button raised on-tap="formClose">Close</paper-button>
       </form>
     </paper-dialog>
 
@@ -170,6 +171,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         userEdit: {
           type: Object,
           notify: true
+        },
+        userIdEdit: {
+          type: Number,
+          notify: true
         }
       },
 
@@ -221,37 +226,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.userEdit = this.users[i];
           }
         }
+        console.log(e.detail);
 
+        this.userIdEdit = e.detail;
         this.$.dialog.toggle();
       },
-
-      formSubmit: function(event) {
-        console.log("New user:" + this.userEdit.user.name.first);
-        
-        // for(var i=0; i < this.users.length; i++) {
-        //   if(this.users[i].user.id === this.userEdit.user.id) {
-        //     this.users[i].user.name.first = this.userEdit.user.name.first;
-        //     this.users[i].user.name.last = this.userEdit.user.name.last;
-        //     this.users[i].user.email = this.userEdit.user.email;
-        //   }
-        // }
-
-        var index = -1;
-        for(var i=0; i < this.users.length; i++) {
-          if(this.users[i].user.id === this.userEdit.user.id)
-          {
-            index = i;
-          }
-        }
-
-        if(index !== -1)
-        {
-          this.set('this.users['+index+'].user.name.first', this.userEdit.user.name.first);
-        }
-
-        console.log(this.users);
+      formClose: function(event) {
         this.$.dialog.close();
+      },
+      formSubmit: function(event) {
+        var user;
+        var position;
+        for(var j = 0; j < this.users.length; j++) {
+            if(this.users[j].user.id === this.userIdEdit) {
+              user = this.users[j];
+              position = j;
+            }
+        }
+        user.user.name.first = this.userEdit.user.name.first;
+        user.user.name.last = this.userEdit.user.name.last;
+        user.user.email = this.userEdit.user.email;
+
+        this.set('users.'+position,user);
+        this.notifyPath('users.'+position+'.user',user.user);
+        
+        console.log(this.users);
         this.$.editUserToast.open();
+        //this.fire('iron-signal', {name: 'edituserdone', data: position});
+        this.formClose();
       },
       formReset: function(event) {
         this.$.basicform.reset();

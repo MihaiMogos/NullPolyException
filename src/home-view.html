@@ -13,7 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="home-view">
-  <template is="dom-bind">
+  <template>
     <style include="shared-styles" is="custom-style">
       :host {
         display: block;
@@ -27,6 +27,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     </style>
 
+     <!--Handling user editing signal-->
+    <iron-signals on-iron-signal-edituserdone="_handleUserEditDoneEvent"></iron-signals>
+
     <div class="card">
       <iron-data-table id="grid1" 
                        selection-enabled 
@@ -37,17 +40,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </data-table-column>
         <data-table-column name="Picture" width="50px" flex="0">
           <template>
-            <img src="{{item.user.picture}}">
+            <img src="[[item.user.picture]]">
           </template>
         </data-table-column>
         <data-table-column name="First Name">
-          <template>{{item.user.name.first}}</template>
+          <template>[[item.user.name.first]]</template>
         </data-table-column>
         <data-table-column name="Last Name">
-          <template>{{item.user.name.last}}</template>
+          <template>[[item.user.name.last]]</template>
         </data-table-column>
         <data-table-column name="Email">
-          <template>{{item.user.email}}</template>
+          <template>[[item.user.email]]</template>
         </data-table-column>
       </iron-data-table>
   </div>
@@ -68,6 +71,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _deselecting: function(e) {
           e.preventDefault();
+      },
+      _handleUserEditDoneEvent: function(e) {
+        //this.$.grid1.render();
+        console.log("deselect: " + e.detail);
+        this.$.grid1.deselectItem(event.detail)
       }
     });
   </script>
