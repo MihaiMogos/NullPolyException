@@ -29,6 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">
 <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 
@@ -144,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fallback-selection="view404"
             role="main">
           <home-view name="home" users="{{users}}"></home-view>
-          <bank-view name="bank"></bank-view>
+          <bank-view name="bank" users="{{users}}"></bank-view>
           <new-user-view name="new-user" users="{{users}}"></new-user-view>
           <error404-view name="error404"></error404-view>
         </iron-pages>

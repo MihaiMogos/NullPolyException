@@ -22,13 +22,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <h1>Bank details view</h1>
-     </div>
+      <h1>Check client bank details</h1>
+      <paper-autocomplete label="Search the user" 
+                          id="input-local" 
+                          no-label-float="true" 
+                          source="[[states]]"
+                          on-autocomplete-selected="onCustomSelect">
+      </paper-autocomplete>
+    </div>
   </template>
 
   <script>
     Polymer({
       is: 'bank-view',
+      properties: {
+          states: {
+            type: Array,
+          }
+      },
+      ready: function(){
+        this.states = [
+          {"text": "Alabama", "value": "AL"},
+          {"text": "Alaska", "value": "AK"},
+          {"text": "American Samoa", "value": "AS"},
+          {"text": "Arizona", "value": "AZ"},
+          {"text": "Arkansas", "value": "AR"},
+          {"text": "California", "value": "CA"},
+          {"text": "Colorado", "value": "CO"},
+          {"text": "Connecticut", "value": "CT"},
+          {"text": "Delaware", "value": "DE"},
+          {"text": "District Of Columbia", "value": "DC"},
+          {"text": "Federated States Of Micronesia", "value": "FM"},
+          {"text": "Florida", "value": "FL"},
+          {"text": "Georgia", "value": "GA"},
+          {"text": "Guam", "value": "GU"},
+          {"text": "Hawaii", "value": "HI"}];
+      },
+
+      onCustomSelect: function(event)
+      {
+        console.log("Bank info select: " + event.detail.text);
+      }
     });
   </script>
 </dom-module>
