@@ -19,10 +19,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         padding: 10px;
       }
+
+      #grid1 {
+      --iron-data-table: {
+        height: 690px;
+      }
+    }
     </style>
 
     <div class="card">
-      <iron-data-table id="grid" 
+      <iron-data-table id="grid1" 
                        selection-enabled 
                        items="{{users}}"
                        selected-item="{{selectedItem}}">

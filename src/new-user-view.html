@@ -19,6 +19,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px;
       }
+
+      paper-dialog.colored {
+        border: 2px solid;
+        border-color: var(--paper-green-500);
+        background-color: var(--paper-light-green-50);
+        color: var(--paper-green-500);
+      }
+
+      paper-dialog.size-position {
+        position: fixed;
+        top: 56px;
+        right: 46px;
+        width: 420px;
+        height: 320px;
+        overflow: auto;
+      }
     </style>
 
     <div class="card">
@@ -26,6 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- This form is only used to display the elements -->
       <form is="iron-form" id="redirectDemo">
+        <paper-input name="firstname" label="Client id" type="number" value="{{client_id}}" required></paper-input>
         <paper-input name="firstname" label="First Name" value="{{first_name}}" required></paper-input>
         <paper-input name="secondname" label="Second Name" value="{{last_name}}"required></paper-input>
         <paper-input name="email" label="Email" type="email" value="{{email_address}}" required></paper-input>
@@ -34,6 +51,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button raised on-tap="addUser">Submit</paper-button>
       </form>
     </div>
+
+    <paper-dialog id="dialog" class="colored size-position">
+      <h2>Account id:[[client_id]] successfully created!</h2>
+      <p>Profile picture: </p>
+      <img src="[[profile_picture]]">
+      <p>Name: [[first_name]] [[last_name]]</p>
+      <p>Email: [[email_address]]</p>
+    </paper-dialog>
   </template>
 
   <script>
@@ -42,12 +67,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       addUser: function() {
           var user = this.users[0];
 
+          user.user.id = this.client_id;
           user.user.name.first = this.first_name;
           user.user.name.last = this.last_name;
           user.user.email = this.email_address;
           user.user.picture = this.profile_picture;
 
           this.push('users',user);
+          this.$.dialog.toggle();
       }
     });
   </script>

@@ -29,6 +29,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+
 
 <link rel="import" href="my-icons.html">
 
@@ -68,16 +70,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       #profile-picture {
-        width: 48px;
-        height: 48px;
+        width: 72px;
+        height: 72px;
         background: #ddd;
       }
     </style>
 
     <!--Load data from json and create local-storage-->
+    <!-- url="http://www.mocky.io/v2/58aca068100000af18514bc5" -->
     <iron-ajax
       auto
-      url="http://www.mocky.io/v2/58aca068100000af18514bc5"
+      url="https://raw.githubusercontent.com/danlucian/mocking/master/data.json"
       handle-as="json"
       on-response="handleAjaxResponse"
       debounce-duration="300"></iron-ajax>
@@ -196,6 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             console.log("[AJAX CALL]There is already data in localstorage!")
           }
           else {
+            console.log(data.detail);
             console.log(data.detail.response.length + " users will be added in localstorage!");
 
             for(var i=0; i < data.detail.response.length; i++) {
@@ -219,6 +223,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         this.$.dialog.toggle();
       },
+
       formSubmit: function(event) {
         console.log("New user:" + this.userEdit.user.name.first);
         
