@@ -21,7 +21,9 @@
     "grid-element": "^0.4.4",
     "iron-ajax": "^1.4.3",
     "paper-datatable": "^0.9.8",
-    "iron-icons": "^1.2.0"
+    "iron-icons": "^1.2.0",
+    "iron-image": "^1.2.5",
+    "paper-tabs": "^1.8.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

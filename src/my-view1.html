@@ -19,22 +19,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px;
       }
+      :host {
+            --my-custom-color: red;
+            --paper-tab-ink: var(--my-custom-color);
+
+            /* custom CSS property */
+            --paper-tabs-selection-bar-color: blue;
+
+            /* custom CSS mixin */
+            --paper-tabs: {
+                color: var(--default-primary-color); /* variable defined in default-theme.html */
+                font-size: 20px;
+            }
+        }
     </style>
+
       <grid-element center>
-      <grid-col s="10">
+      <grid-col s="8">
+        <div class="card">
+          <paper-tabs selected="0">
+            <paper-tab>Today</paper-tab>
+            <paper-tab>This week</paper-tab>
+          </paper-tabs>
           <div class="card">
             <paper-datatable-card id="datatableCard" page-size="10"  selected-ids="{{selectedIds}}">
-              <paper-datatable id="datatable" selectable multi-selection selected-items="{{selectedItems}}" on-row-tap="rowTapped" data="{{events}}">
+              <paper-datatable id="datatable" selected-items="{{selectedItems}}" on-row-tap="rowTapped" data="{{eventsonpage}}">
                 <div no-results>
-                  Loading or no more items...
+                  There are no events in the calendar.
                 </div>
+                <paper-datatable-column header="Icon" property="picture"  style="min-width: 41px" >
+                    <div style="height: 42px;width: 42px;">
+                      {{value.picture}}
+                    </div>
+                </paper-datatable-column>
                 <paper-datatable-column header="Hour" property="hour" type="String"  align="center" style="min-width: 40px" >
                     <span>{{value.hour}}</span>
                 </paper-datatable-column>
                 <paper-datatable-column header="Name" property="name" type="String"  style="min-width: 160px">
                     <span>{{value.name}}</span>
                 </paper-datatable-column>
-                <paper-datatable-column header="Date" property="date" type="Date"  style="min-width: 40px" inactive>
+                <paper-datatable-column header="Date" property="date" type="String"  style="min-width: 40px" inactive>
                     <span>{{value.date}}</span>
                 </paper-datatable-column>
                 <paper-datatable-column header="Description" property="description" type="String"  style="min-width: 320px" >
@@ -44,8 +68,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-datatable-card>
               <p></p>
           </div>
+        </div>
       </grid-col>
-      <grid-col s="2">
+      <grid-col s="4" start>
            <div class="card">
               <paper-date-picker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged"></paper-date-picker>
           </div>
@@ -65,13 +90,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       ready: function() {
         console.log("HOME DATA RECEIVED: " + this.events[0].name);
+        console.log(this.currentDate);
+        console.log(this.eventsonpage);
+        // //console.log(this.events);
+        // console.log(this.$.datatable.data);
+        // this.$.datatable.data = this.eventsOnPage;
+        // //this.$.datatable.reload();
       },
       _handleSelectionChanged: function(e) {
         //console.log(this.$.picker.date);
-
         var now = new Date(this.$.picker.date).toISOString().slice(0, 10);
-
         console.log(now);
+
+        var selectedDate = new Date(this.$.picker.date).toISOString().slice(0, 10);
+        this.set('eventsOnPage',[]);
+        this.notifyPath('eventsOnPage',this.eventsOnPage);
+
+        for(var i=0; i < this.events.length; i++) {
+          if(this.events[i].date === selectedDate) {
+            this.push('eventsOnPage', this.events[i]);
+          }
+        }
+
+       
+        this.$.datatable.data = this.eventsOnPage;
+        this.$.datatable.reload();
+        console.log(this.eventsOnPage);
+      },
+      // ON ITEM TAP: TODO
+      rowTapped: function(e) {
+          console.log(e.detail);
       }
     });
   </script>
