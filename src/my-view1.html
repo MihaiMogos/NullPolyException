@@ -11,7 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="my-view1">
+<dom-module id="my-view1" >
   <template>
     <style include="shared-styles">
       :host {
@@ -20,18 +20,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
     </style>
-
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+      <grid-element center>
+      <grid-col s="10">
+          <div class="card">
+            <paper-datatable-card id="datatableCard" page-size="10"  selected-ids="{{selectedIds}}">
+              <paper-datatable id="datatable" selectable multi-selection selected-items="{{selectedItems}}" on-row-tap="rowTapped" data="{{events}}">
+                <div no-results>
+                  Loading or no more items...
+                </div>
+                <paper-datatable-column header="Hour" property="hour" type="String"  align="center" style="min-width: 40px" >
+                    <span>{{value.hour}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Name" property="name" type="String"  style="min-width: 160px">
+                    <span>{{value.name}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Date" property="date" type="Date"  style="min-width: 40px" inactive>
+                    <span>{{value.date}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Description" property="description" type="String"  style="min-width: 320px" >
+                    <span>{{value.description}}</span>
+                </paper-datatable-column>
+              </paper-datatable>
+            </paper-datatable-card>
+              <p></p>
+          </div>
+      </grid-col>
+      <grid-col s="2">
+           <div class="card">
+              <paper-date-picker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged"></paper-date-picker>
+          </div>
+      </grid-col>
+    </grid-element>
   </template>
 
   <script>
     Polymer({
       is: 'my-view1',
+      properties: {
+          currentDate: {
+            type: Date,
+            notify:true,
+            value: new Date()
+          }
+      },
+      ready: function() {
+        console.log("HOME DATA RECEIVED: " + this.events[0].name);
+      },
+      _handleSelectionChanged: function(e) {
+        //console.log(this.$.picker.date);
+
+        var now = new Date(this.$.picker.date).toISOString().slice(0, 10);
+
+        console.log(now);
+      }
     });
   </script>
 </dom-module>
