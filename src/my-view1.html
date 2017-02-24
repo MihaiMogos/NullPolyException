@@ -38,10 +38,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <grid-col s="8">
         <div class="card">
           <paper-tabs selected="0">
-            <paper-tab>Today</paper-tab>
-            <paper-tab>This week</paper-tab>
+            <paper-tab on-tap="_changeTab">Today</paper-tab>
+            <paper-tab on-tap="_changeTab">This week</paper-tab>
           </paper-tabs>
-          <div class="card">
+          <div hidden$="{{!showDay}}">
+          <div class="card" >
             <paper-datatable-card id="datatableCard" page-size="10"  selected-ids="{{selectedIds}}">
               <paper-datatable id="datatable" selected-items="{{selectedItems}}" on-row-tap="rowTapped" data="{{eventsonpage}}">
                 <div no-results>
@@ -69,6 +70,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <p></p>
           </div>
         </div>
+        <div hidden$="{{showDay}}">
+          <div class="card">
+            <grid-element center>
+              <grid-col>
+                <span>Monday</span>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+              </grid-col>
+              <grid-col>
+                <span>Tuesday</span>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+              </grid-col>
+              <grid-col>
+                <span>Wednesday</span>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+              </grid-col>
+              <grid-col>
+                <span>Thursday</span>
+                <paper-tile></paper-tile>
+              </grid-col>
+              <grid-col>
+                <span>Friday</span>
+                <paper-tile></paper-tile>
+              </grid-col>
+              <grid-col>
+                <span>Saturday</span>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+              </grid-col>
+              <grid-col>
+                <span>Sunday</span>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+                <paper-tile></paper-tile>
+              </grid-col>
+            </grid-element>
+          </div>
+        </div>
+        </div>
       </grid-col>
       <grid-col s="4" start>
            <div class="card">
@@ -86,6 +134,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Date,
             notify:true,
             value: new Date()
+          },
+          showDay: {
+            type: Boolean,
+            value: true,
+            notify:true
           }
       },
       ready: function() {
@@ -111,8 +164,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.push('eventsOnPage', this.events[i]);
           }
         }
-
-       
         this.$.datatable.data = this.eventsOnPage;
         this.$.datatable.reload();
         console.log(this.eventsOnPage);
@@ -120,6 +171,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // ON ITEM TAP: TODO
       rowTapped: function(e) {
           console.log(e.detail);
+      },
+      _changeTab:function() {
+        this.showDay = !this.showDay;
       }
     });
   </script>
