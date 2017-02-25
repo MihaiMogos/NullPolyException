@@ -39,7 +39,8 @@
     "iron-demo-helpers": "^1.2.5",
     "star-rating": "*",
     "flexible-rating": "^1.0.2",
-    "l2t-star-rating": "^1.0.0"
+    "l2t-star-rating": "^1.0.0",
+    "fullscreen-api": "^1.1.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

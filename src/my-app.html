@@ -42,7 +42,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/profile-vcard/profile-vcard.html">
 <link rel="import" href="../bower_components/voice-elements/dist/voice-player.html">
 <link rel="import" href="../bower_components/l2t-star-rating/l2t-star-rating.html">
-
+<link rel="import" href="../bower_components/fullscreen-api/fullscreen-api.html">
+<link rel="import" href="../bower_components/fullscreen-api/fullscreen-icon-button.html">
 <!--<link rel="import" href="../bower_components/paper-elements/paper-elements.html">-->
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="my-icons.html">
@@ -88,9 +89,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         bottom: 30px;          
       }
 
+      paper-fab.second {
+        position: fixed;
+        right: 100px;
+        bottom: 29px;          
+      }
+
        paper-fab.blue {
         --paper-fab-background: var(--paper-light-blue-500);
         --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+      }
+
+      paper-fab.red {
+        --paper-fab-background: var(--paper-light-red-500);
+        --paper-fab-keyboard-focus-background: var(--paper-light-red-900);
       }
 
       @import url(http://fonts.googleapis.com/css?family=Roboto);
@@ -622,10 +634,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header condenses reveals effects="waterfall">
+        <app-header condenses reveals effects="waterfall" hidden$={{fullScreenMode}}>
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My App</div>
+            <div main-title>Event Planner</div>
+            <fullscreen-icon-button id="fullscrnbtn" title="fullscreen" tabindex="0" on-tap="fullScreenHandler"></fullscreen-icon-button>
           </app-toolbar>
         </app-header>
 
@@ -640,6 +653,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-header-layout>
     </app-drawer-layout>
     <paper-fab icon="add" class="blue" on-tap="_handleAddEvent"></paper-fab>
+    <paper-fab icon="close" class="red second" on-tap="_handleExitPresentation" hidden$={{!fullScreenMode}}></paper-fab>
   </template>
 
   <script>
@@ -671,6 +685,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           Type:Object,
           notify: true,
           value:{}
+        },
+        fullScreenMode: {
+          Type: Boolean,
+          value: false,
+          notify:true
         }
       },
 
@@ -756,6 +775,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       changeratinghandler:function(data){
         //console.log(this.$.eventrating.rate);
         console.log("VERIFICA: " + this.eventDetails.rating);
+      },
+      fullScreenHandler: function() {
+        this.fullScreenMode = !this.fullScreenMode;
+      },
+      _handleExitPresentation: function() {
+        this.$.fullscrnbtn.exitFullscreen();
+        this.fullScreenMode = !this.fullScreenMode;
       }
     });
   </script>
