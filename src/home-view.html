@@ -11,7 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="my-view1" >
+<dom-module id="home-view" >
   <template>
     <style include="shared-styles">
       :host {
@@ -64,10 +64,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <paper-datatable-column header="Date" property="date" type="String"  style="min-width: 40px" inactive>
                     <span>{{value.date}}</span>
                 </paper-datatable-column>
-                <paper-datatable-column header="Description" property="description" type="String"  style="min-width: 320px" >
+                <paper-datatable-column header="Description" property="description" type="String">
                     <span>{{value.description}}</span>
                 </paper-datatable-column>
-                <paper-datatable-column header="Location" property="location" type="String"  style="min-width: 320px" >
+                <paper-datatable-column header="Location" property="location" type="String">
                     <span>{{value.location}}</span>
                 </paper-datatable-column>
               </paper-datatable>
@@ -115,13 +115,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <!--<app-datepicker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged" view="vertical" ><app-datepicker>-->
               <paper-date-picker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged" narrow></paper-date-picker>
           </div>
+          <div class="card">
+            Advertising campaign 
+          </div>
       </grid-col>
     </grid-element>
   </template>
 
   <script>
     Polymer({
-      is: 'my-view1',
+      is: 'home-view',
       properties: {
           currentDate: {
             type: Date,
@@ -193,6 +196,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // ON ITEM TAP: TODO
       rowTapped: function(e) {
           console.log(e.detail);
+          this.fire('iron-signal', {name: 'eventinfopaper', data: e.detail});
       },
       _changeTab:function() {
         this.showDay = !this.showDay;
