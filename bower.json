@@ -33,7 +33,13 @@
     "paper-toast": "^1.3.0",
     "iron-signals": "^1.0.3",
     "profile-vcard": "^2.0.0",
-    "voice-elements": "^1.0.0"
+    "voice-elements": "^1.0.0",
+    "s-rating": "^0.1.3",
+    "paper-rating": "^1.2.0",
+    "iron-demo-helpers": "^1.2.5",
+    "star-rating": "*",
+    "flexible-rating": "^1.0.2",
+    "l2t-star-rating": "^1.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

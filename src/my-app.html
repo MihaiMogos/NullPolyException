@@ -41,6 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../bower_components/profile-vcard/profile-vcard.html">
 <link rel="import" href="../bower_components/voice-elements/dist/voice-player.html">
+<link rel="import" href="../bower_components/l2t-star-rating/l2t-star-rating.html">
 
 <!--<link rel="import" href="../bower_components/paper-elements/paper-elements.html">-->
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -480,6 +481,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </div>
               </aside>
               </div>
+              <hr>
+              <l2t-star-rating stars="10" rate="{{eventDetails.date}}"></l2t-star-rating>
             </grid-col>
             <grid-col>
               <div class="card">
@@ -749,6 +752,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       speakDetails:function(data){
         this.$.playerelement.speak();
+      },
+      changeratinghandler:function(data){
+        //console.log(this.$.eventrating.rate);
+        console.log("VERIFICA: " + this.eventDetails.rating);
       }
     });
   </script>
