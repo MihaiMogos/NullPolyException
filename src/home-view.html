@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             --paper-tab-ink: var(--my-custom-color);
 
             /* custom CSS property */
-            --paper-tabs-selection-bar-color: blue;
+            --paper-tabs-selection-bar-color: #00897B;
 
             /* custom CSS mixin */
             --paper-tabs: {
@@ -38,9 +38,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       background: #00897B!important;
     }
 
-
       carousel-slide {
-          background: #3498db;
+          background: #00897B!important;
           color: #fff;
           font-size: 36px;
           line-height: 100px;
@@ -48,6 +47,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 2%;
           position: relative;
           text-align: center;
+      }
+
+      paper-date-picker {
+        --default-primary-color : #00897B;
+      }
+
+      paper-tab {
+        --paper-tabs: #00897B;
       }
     </style>
 
@@ -57,8 +64,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <grid-col s="5">
         <div class="card">
           <paper-tabs selected="0">
-            <paper-tab on-tap="_changeTab">Today</paper-tab>
-            <paper-tab on-tap="_changeTab">This week</paper-tab>
+            <paper-tab on-tap="_changeTab"> <span style="color:#000000!important;">Today</span></paper-tab>
+            <paper-tab on-tap="_changeTab"> <span style="color:#000000!important;">This week</span></paper-tab>
           </paper-tabs>
           <div hidden$="{{!showDay}}">
           <div class="card" >
@@ -134,16 +141,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
           <div class="card">
             <header><center>Interesting this week</center></header>
+            <hr>
             <br>
-            <simple-carousel transition-style="linear" infinite-loop="true" auto="true" transition-time="5000" transition-duration="500">
+            <simple-carousel style="margin-top: -25px;" transition-style="linear" infinite-loop="true" auto="true" transition-time="5000" transition-duration="500">
               <carousel-slide>
-                <span ><img src='http://lorempixel.com/277/277/business/' height='72px' width='72px'/> DevoxxPL STARS</span>
+                <span ><img src='http://lorempixel.com/277/277/business/' height='72px' width='72px' style="margin-top: 35px;"/> DevoxxMA <l2t-star-rating stars="5"</span>
               </carousel-slide>
               <carousel-slide>
-                <span><img src='http://lorempixel.com/277/277/business/' height='72px' width='72px'/> DevoxxPL STARS</span>
+                <span><img src='http://lorempixel.com/277/277/business/' height='72px' width='72px' style="margin-top: 35px;"/> DevoxxPL <l2t-star-rating stars="5"</span>
               </carousel-slide>
               <carousel-slide>
-                <span><img src='http://lorempixel.com/277/277/business/' height='72px' width='72px'/> DevoxxPL STARS</span>
+                <span><img src='http://lorempixel.com/277/277/business/' height='72px' width='72px' style="margin-top: 35px;"/> DevoxxBUH <l2t-star-rating stars="5"</span>
               </carousel-slide>         
             </simple-carousel>
           </div>

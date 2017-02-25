@@ -103,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       paper-fab.second {
         position: fixed;
         right: 100px;
-        bottom: 29px;          
+        bottom: 30px;          
       }
 
        paper-fab.blue {
@@ -478,6 +478,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       img {
           border: 0;
       }
+
+      paper-date-picker {
+        --default-primary-color : #00897B;
+      }
     </style>
 
      <!--Load data from json and create local-storage-->
@@ -651,7 +655,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals effects="waterfall" hidden$={{fullScreenMode}}>
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Event Planner</div>
+            <div main-title center>Event Plannner</div>
             <fullscreen-icon-button id="fullscrnbtn" title="fullscreen" tabindex="0" on-tap="fullScreenHandler"></fullscreen-icon-button>
           </app-toolbar>
         </app-header>
