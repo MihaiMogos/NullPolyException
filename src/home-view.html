@@ -36,8 +36,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <iron-signals on-iron-signal-addeduserevent="_handleSelectionChanged"></iron-signals>
 
-      <grid-element center>
-      <grid-col s="8">
+      <grid-element start>
+      <grid-col s="4">
         <div class="card">
           <paper-tabs selected="0">
             <paper-tab on-tap="_changeTab">Today</paper-tab>
@@ -110,7 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
         </div>
       </grid-col>
-      <grid-col s="4" start>
+      <grid-col s="2">
            <div class="card">
               <!--<app-datepicker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged" view="vertical" ><app-datepicker>-->
               <paper-date-picker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged" narrow></paper-date-picker>
