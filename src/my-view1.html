@@ -67,60 +67,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-datatable-column>
               </paper-datatable>
             </paper-datatable-card>
-              <p></p>
           </div>
         </div>
         <div hidden$="{{showDay}}">
           <div class="card">
-            <grid-element center>
-              <grid-col>
-                <span>Monday</span>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-              </grid-col>
-              <grid-col>
-                <span>Tuesday</span>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-              </grid-col>
-              <grid-col>
-                <span>Wednesday</span>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-              </grid-col>
-              <grid-col>
-                <span>Thursday</span>
-                <paper-tile></paper-tile>
-              </grid-col>
-              <grid-col>
-                <span>Friday</span>
-                <paper-tile></paper-tile>
-              </grid-col>
-              <grid-col>
-                <span>Saturday</span>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-              </grid-col>
-              <grid-col>
-                <span>Sunday</span>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-                <paper-tile></paper-tile>
-              </grid-col>
-            </grid-element>
+            <paper-datatable-card id="datatableCard" page-size="10"  selected-ids="{{selectedIds}}">
+              <paper-datatable id="datatableweek" selected-items="{{selectedItems}}" on-row-tap="rowTapped" data="{{weekEvents}}">
+                <div no-results>
+                  There are no events in the calendar.
+                </div>
+                <paper-datatable-column header="Icon" property="picture"  style="min-width: 41px" >
+                    <div style="height: 42px;width: 42px;">
+                      {{value.picture}}
+                    </div>
+                </paper-datatable-column>
+                <paper-datatable-column header="Date" property="date" type="String"  align="center" style="min-width: 40px" >
+                    <span>{{value.date}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Hour" property="hour" type="String"  align="center" style="min-width: 40px" >
+                    <span>{{value.hour}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Name" property="name" type="String"  style="min-width: 160px">
+                    <span>{{value.name}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Date" property="date" type="String"  style="min-width: 40px" inactive>
+                    <span>{{value.date}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Description" property="description" type="String"  style="min-width: 320px" >
+                    <span>{{value.description}}</span>
+                </paper-datatable-column>
+              </paper-datatable>
+            </paper-datatable-card>
           </div>
         </div>
         </div>
       </grid-col>
       <grid-col s="4" start>
            <div class="card">
-              <paper-date-picker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged"></paper-date-picker>
+              <!--<app-datepicker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged" view="vertical" ><app-datepicker>-->
+              <paper-date-picker id="picker" date="[[currentDate]]" on-click="_handleSelectionChanged" narrow></paper-date-picker>
           </div>
       </grid-col>
     </grid-element>
@@ -139,6 +124,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Boolean,
             value: true,
             notify:true
+          },
+          weekEvents: {
+            type: Array,
+            notify: true,
+            value: []
           }
       },
       ready: function() {
@@ -151,13 +141,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // //this.$.datatable.reload();
       },
       _handleSelectionChanged: function(e) {
-        //console.log(this.$.picker.date);
+        console.log(this.$.picker);
         var now = new Date(this.$.picker.date).toISOString().slice(0, 10);
         console.log(now);
 
         var selectedDate = new Date(this.$.picker.date).toISOString().slice(0, 10);
         this.set('eventsOnPage',[]);
         this.notifyPath('eventsOnPage',this.eventsOnPage);
+        this.set('weekEvents',[]);
+        this.notifyPath('weekEvents',this.weekEvents);
 
         for(var i=0; i < this.events.length; i++) {
           if(this.events[i].date === selectedDate) {
@@ -167,6 +159,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.datatable.data = this.eventsOnPage;
         this.$.datatable.reload();
         console.log(this.eventsOnPage);
+
+        now = new Date(this.$.picker.date);
+        var monday = this.getMonday(now);
+        console.log("monday: " + monday);
+        var weekDays = [];
+        var myDate = new Date(monday);
+        for(var j=0; j < 7; j++) {
+          weekDays.push(myDate.toISOString().slice(0, 10));
+          //add a day to the date
+          myDate.setDate(myDate.getDate() + 1);
+        }
+
+
+        console.log(weekDays);
+        for(var k=0; k<this.events.length;k++) {
+          if(this.isInArray(this.events[k].date,weekDays)) {
+            this.push('weekEvents',this.events[k]);
+          }
+        }
+        console.log(this.weekEvents);
+        
       },
       // ON ITEM TAP: TODO
       rowTapped: function(e) {
@@ -174,6 +187,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _changeTab:function() {
         this.showDay = !this.showDay;
+        this._handleSelectionChanged();
+      },
+      getMonday: function(d) {
+          d = new Date(d);
+          var day = d.getDay(),
+          diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+          return new Date(d.setDate(diff));
+      },
+      isInArray: function(value,array) {
+          return array.indexOf(value) > -1;
       }
     });
   </script>
