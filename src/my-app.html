@@ -25,12 +25,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-tile/paper-tile.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 
 <!--<link rel="import" href="../bower_components/paper-elements/paper-elements.html">-->
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -98,6 +106,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-iron-localstorage-load-empty="initializeDefaultStorageArray">
     </iron-localstorage>
 
+
+    <paper-dialog id="dialog" alwaysOnTop>
+      <h2>Add new event</h2>
+      <form is="iron-form" id="basicform">
+        <div>
+          <paper-date-picker id="neweventdate" date="{{newEventDate}}"></paper-date-picker>
+        </div>
+        <paper-input name="name" label="Event Name" value="{{event_name}}" required></paper-input>
+        <paper-input name="description" label="Event Description" value="{{event_description}}" required></paper-input>
+        <paper-input name="location" label="Event Location" value="{{event_location}}" required></paper-input>
+        <paper-dropdown-menu label="Event Hour">
+          <paper-listbox id="dropdownhour" class="dropdown-content">
+            <paper-item>01:00</paper-item>
+            <paper-item>02:00</paper-item>
+            <paper-item>03:00</paper-item>
+            <paper-item>04:00</paper-item>
+            <paper-item>05:00</paper-item>
+            <paper-item>06:00</paper-item>
+            <paper-item>07:00</paper-item>
+            <paper-item>08:00</paper-item>
+            <paper-item>09:00</paper-item>
+            <paper-item>10:00</paper-item>
+            <paper-item>11:00</paper-item>
+            <paper-item>12:00</paper-item>
+            <paper-item>13:00</paper-item>
+            <paper-item>14:00</paper-item>
+            <paper-item>15:00</paper-item>
+            <paper-item>16:00</paper-item>
+            <paper-item>17:00</paper-item>
+            <paper-item>18:00</paper-item>
+            <paper-item>19:00</paper-item>
+            <paper-item>20:00</paper-item>
+            <paper-item>21:00</paper-item>
+            <paper-item>22:00</paper-item>
+            <paper-item>23:00</paper-item>
+            <paper-item>24:00</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+       <hr>
+       <center>
+      <paper-button raised on-tap="formSubmit"><iron-icon icon="check"></iron-icon>Save</paper-button>
+      <paper-button raised on-tap="formReset"><iron-icon icon="autorenew"></iron-icon>Reset fields</paper-button>
+      <paper-button raised on-tap="formClose"><iron-icon icon="close"></iron-icon>Close</paper-button>
+       </center>
+      </form>
+    </paper-dialog>
+
+    <!-- Toast after editing client -->
+    <paper-toast id="addedEventToast" text="Event successfully added 💪"></paper-toast>
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -160,6 +218,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Array,
             notify: true,
             value: []
+        },
+        newEventDate: {
+          type:Date,
+          notify:true,
+          value: new Date()
         }
       },
 
@@ -208,6 +271,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _handleAddEvent:function() {
           console.log("YAY");
+          this.$.dialog.toggle();
+      },
+       formClose: function(event) {
+        this.$.dialog.close();
+      },
+      formSubmit: function(event) {
+        console.log("Add name: " + this.event_name);
+        console.log("Add desc: " + this.event_description);
+        console.log(this.newEventDate.toISOString().slice(0, 10));
+        var ddh = this.$.dropdownhour.selectedItem.textContent;
+        console.log("Add ddh: " + ddh);
+
+        var event = {};
+        event.name = this.event_name;
+        event.description = this.event_description;
+        event.hour = this.$.dropdownhour.selectedItem.textContent;
+        event.date = this.newEventDate.toISOString().slice(0, 10);
+        event.location = this.event_location;
+        event.picture = "<img src='http://lorempixel.com/268/268/business/' height='72px' width='72px'/>";
+
+        this.push('events',event);
+        this.fire('iron-signal', {name: 'addeduserevent', data: null});
+
+        this.$.addedEventToast.open();
+        this.formClose();
+        this.formReset();
+      },
+      formReset: function(event) {
+        this.$.basicform.reset();
       }
     });
   </script>

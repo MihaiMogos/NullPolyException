@@ -34,6 +34,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
     </style>
 
+      <iron-signals on-iron-signal-addeduserevent="_handleSelectionChanged"></iron-signals>
+
       <grid-element center>
       <grid-col s="8">
         <div class="card">
@@ -65,6 +67,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <paper-datatable-column header="Description" property="description" type="String"  style="min-width: 320px" >
                     <span>{{value.description}}</span>
                 </paper-datatable-column>
+                <paper-datatable-column header="Location" property="location" type="String"  style="min-width: 320px" >
+                    <span>{{value.location}}</span>
+                </paper-datatable-column>
               </paper-datatable>
             </paper-datatable-card>
           </div>
@@ -95,6 +100,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-datatable-column>
                 <paper-datatable-column header="Description" property="description" type="String"  style="min-width: 320px" >
                     <span>{{value.description}}</span>
+                </paper-datatable-column>
+                <paper-datatable-column header="Location" property="location" type="String"  style="min-width: 320px" >
+                    <span>{{value.location}}</span>
                 </paper-datatable-column>
               </paper-datatable>
             </paper-datatable-card>
@@ -141,6 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // //this.$.datatable.reload();
       },
       _handleSelectionChanged: function(e) {
+        console.log("APELATA!!");
         console.log(this.$.picker);
         var now = new Date(this.$.picker.date).toISOString().slice(0, 10);
         console.log(now);
